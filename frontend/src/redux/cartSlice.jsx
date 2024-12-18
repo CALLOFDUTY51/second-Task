@@ -6,20 +6,20 @@ const Slice = createSlice({
     cart: [],
   },
   reducers: {
-    // Add a product to the cart
+    // Add to cart function each product can only be added once
     addCart: (state, action) => {
       const existingProduct = state.cart.find((item) => item.id === action.payload.id);
 
       if (!existingProduct) {
         state.cart.push({ ...action.payload, quantity: 1 }); // Add quantity by default
       } else {
-        // Optionally handle duplicate adds in UI
+        
         console.warn("Product already in cart");
       }
       
     },
 
-    // Delete a product from the cart
+    // Delete  product from  cart
     deleteCart: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload);
     },

@@ -60,7 +60,7 @@ const totalPrice = cart.reduce((total, item) => total + Number(item.price) * ite
           />
         </Form.Group>
 
-        {/* Payment method selection */}
+        
         <Form.Group controlId="paymentMethod" className="mb-3">
           <Form.Label>Payment Method</Form.Label>
           <Form.Control

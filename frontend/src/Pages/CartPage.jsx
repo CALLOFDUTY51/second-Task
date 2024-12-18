@@ -1,19 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Table, Button } from "react-bootstrap";
-import { incrementQuantity, decrementQuantity, deleteCart } from "../redux/cartSlice"; // Import actions from your slice
-import { useNavigate } from "react-router-dom";
+import { Table, Button, Modal, Form } from "react-bootstrap";
+import { incrementQuantity, decrementQuantity, deleteCart } from "../redux/cartSlice";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.myslice.cart);
-const navigate=useNavigate()
-  // Calculate the total price
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState("");
+
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-const goToCheckOut=()=>{
-    navigate("/Check")
-}
+  // Stripe publishable key
+  const stripePromise = loadStripe("pk_test_51QXAuJ01G69PQEFojIUffY8BqGkPBnjFNo2anVoK97lt9ZOtuYnjZZoe0XhFy4BgnB634LuJHBHROOENTkiXRlwL000aEEXjtC"); // Replace with your Stripe publishable key
+
+  const handleCheckout = () => {
+    setShowModal(true); // Open the modal
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false); // Close the modal
+  };
+
+  const handleProceed = async () => {
+    if (!email) {
+      alert("Please enter your email!");
+      return;
+    }
+
+    try {
+      // Create a checkout session on the backend
+      const response = await axios.post("http://localhost:5000/product/payment", {
+        email,
+        cart,
+      });
+
+      const { sessionId } = response.data;
+
+      // Load Stripe and redirect to checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        console.error("Stripe Checkout error:", error);
+      }
+    } catch (error) {
+      console.error("Error creating checkout session:", error);
+      alert("An error occurred while processing your checkout. Please try again.");
+    }
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -77,15 +114,44 @@ const goToCheckOut=()=>{
           </Table>
 
           <div style={{ textAlign: "right", marginTop: "20px" }}>
-            <h4>Total Price: ${totalPrice.toFixed(2)}</h4>
-            <button onClick={goToCheckOut} className="button-custom" onC variant="primary" size="lg">
+            <h4>Total Price: ${totalPrice}</h4>
+            <Button variant="primary" size="lg" onClick={handleCheckout}>
               Checkout
-            </button>
+            </Button>
           </div>
         </>
       ) : (
         <h4>Your cart is empty.</h4>
       )}
+
+      {/* Modal for Email Input */}
+      <Modal show={showModal} onHide={handleModalClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Checkout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="email">
+              <Form.Label>Enter Your Email</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="example@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleProceed}>
+            Proceed to Checkout
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
