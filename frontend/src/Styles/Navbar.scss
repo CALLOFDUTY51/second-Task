@@ -1,0 +1,50 @@
+.nav-link {
+    position: relative; // Make sure the element is positioned
+    text-decoration: none; // Remove default underline
+    color: #dcd1d1; // Adjust color if needed
+  
+    &:hover {
+      color: black;
+    }
+  
+    &::after {
+      content: ""; // Required to make the pseudo-element appear
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 1px; // Adjust thickness of the underline
+      background-color: #000; // Underline color
+      transition: width 0.3s ease; // Smooth transition effect
+    }
+  
+    &:hover::after {
+      width: 100%; // Full width on hover
+    }
+  }
+  .nav-link-mid{
+    color: #000;
+  }
+  .nav__logo {
+    i {
+      font-size: 25px;
+      font-weight: 700;
+      color: #27282a;
+    }
+  }
+  
+  .icon-badge-container {
+    position: relative;
+  
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color:#ffbe00;
+      color: white;
+      border-radius: 50%;
+      padding: 0 5px;
+      font-size: 18px;
+    }
+  }
+  

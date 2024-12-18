@@ -1,0 +1,13 @@
+.button-custom {
+    color: #ffbe00;
+    border: 2px solid #ffbe00;
+    background-color: transparent;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5%;
+}
+  
+  .button-custom:hover {
+    background-color: #ffbe00;
+    color: white;
+  }
+  
