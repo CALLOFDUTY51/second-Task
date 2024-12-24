@@ -34,7 +34,7 @@ const Transaction=require("../Models/TransactionModel")
         email,
         cart,
         sessionId: session.id,
-        status: 'success',
+        status: 'pending',
       });
       await transaction.save();
   

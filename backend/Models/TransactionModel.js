@@ -11,9 +11,9 @@ const TransactionSchema = new mongoose.Schema({
       },
     ],
     sessionId: String,
-    status: { type: String, enum: ['success', 'failed'] },
-    timestamp: { type: Date, default: Date.now },
-    error: String,
+    status: String
+   
+    
   });
 
 module.exports = mongoose.model("Transaction", TransactionSchema);

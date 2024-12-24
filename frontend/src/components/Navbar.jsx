@@ -14,7 +14,7 @@ const NavbarComponent = () => {
     
     <Navbar bg="light" expand="lg">
     <Container className="d-flex justify-content-between">
-      <Navbar.Brand href="#"><img style={{width:"80px"}} src="https://rb.gy/1nyltu" alt="" /></Navbar.Brand>
+      <Navbar.Brand as={Link} to='Home'><img style={{width:"80px"}} src="https://rb.gy/1nyltu" alt="" /></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto d-flex align-items-center">
