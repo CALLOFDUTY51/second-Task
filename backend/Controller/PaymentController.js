@@ -28,6 +28,8 @@ const Transaction=require("../Models/TransactionModel")
         success_url: `${origin}/success`,
         cancel_url: `${origin}/cancel`,
       });
+
+      console.log(session.id)
   
       // Save successful transaction details to MongoDB
       const transaction = new Transaction({

@@ -21,6 +21,8 @@ const statusChange = async (req, res) => {
     if (event.type === 'payment_intent.succeeded') {
         const paymentIntent = event.data.object;
 
+        console.log(paymentIntent.id)
+
         // Find the transaction by the PaymentIntent ID (sessionId was saved with session creation)
         try {
             const transaction = await Transaction.findOne({ sessionId: paymentIntent.id });
